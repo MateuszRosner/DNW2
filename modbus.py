@@ -123,13 +123,15 @@ class Modbus():
         self.send_frame(frame)
         self.read_data(dataLen=8)
 
-        #frame.data[1] = mC.RTD_NET_ON_OFF
-        #frame.data[3] = int(resources.temp_on)
-        #self.send_frame(frame)
-        #self.read_data(dataLen=8)
-
         frame.data[1] = mC.RTD_NET_MODE
         frame.data[3] = int(5)
+        self.send_frame(frame)
+        self.read_data(dataLen=8)
+
+        frame.command = mC.MODBUS_WRITE_COIL
+
+        frame.data[1] = mC.RTD_NET_ON_OFF
+        frame.data[3] = int(resources.temp_on)
         self.send_frame(frame)
         self.read_data(dataLen=8)
 
@@ -156,7 +158,14 @@ class Modbus():
 
         if self.read_data() == True:
             print(f"[INFO] AC mode: {self.frame.data[2]}")
-            
+
+        frame.data[1] = mC.RTD_NET_FAN_SPEED
+        self.send_frame(frame)
+
+        if self.read_data() == True:
+            print(f"[INFO] AC fan speed lvl: {self.frame.data[2]}")
+
+        frame.command = mC.MODBUS_READ_COIL
         frame.data[1] = mC.RTD_NET_ON_OFF
         self.send_frame(frame)
 
@@ -166,12 +175,6 @@ class Modbus():
                 resources.temp_on = bool(self.frame.data[2])
                 date_time = datetime.now()
                 resources.tempdate = date_time.strftime("%Y-%m-%d %H:%M:%S")
-
-        frame.data[1] = mC.RTD_NET_FAN_SPEED
-        self.send_frame(frame)
-
-        if self.read_data() == True:
-            print(f"[INFO] AC fan speed lvl: {self.frame.data[2]}")
 
     
     def FlushBuffer(self):
