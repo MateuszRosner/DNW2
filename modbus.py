@@ -94,7 +94,7 @@ class Modbus():
                         
         return True
     
-    def read_coil_data(self, dataLen=5):
+    def read_coil_data(self, dataLen=6):
         if self.ser.isOpen() == True:
             self.frame.data.clear()
             data = self.ser.read(dataLen)
