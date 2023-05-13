@@ -123,13 +123,13 @@ class Modbus():
         self.send_frame(frame)
         self.read_data(dataLen=8)
 
-        frame.data[1] = mC.RTD_NET_ON_OFF
-        frame.data[3] = int(resources.temp_on)
-        self.send_frame(frame)
-        self.read_data(dataLen=8)
+        #frame.data[1] = mC.RTD_NET_ON_OFF
+        #frame.data[3] = int(resources.temp_on)
+        #self.send_frame(frame)
+        #self.read_data(dataLen=8)
 
         frame.data[1] = mC.RTD_NET_MODE
-        frame.data[3] = int(0)
+        frame.data[3] = int(5)
         self.send_frame(frame)
         self.read_data(dataLen=8)
 
