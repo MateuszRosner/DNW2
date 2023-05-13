@@ -93,6 +93,39 @@ class Modbus():
                         return False
                         
         return True
+    
+    def read_coil_data(self, dataLen=5):
+        if self.ser.isOpen() == True:
+            self.frame.data.clear()
+            data = self.ser.read(dataLen)
+            data = bytearray(data)
+
+            if len(data) < dataLen:
+                print(data)
+                self.frame.clear()
+                self.ser.flush()
+                return False
+            else:
+                self.frame.address = (data[0])
+                self.frame.command = (data[1])
+                self.frame.data.append((data[2]))
+
+                self.frame.CRC = (data[3] & 0xFF) | (data[4] << 8)
+
+                print(self.frame)
+
+                # check CRC
+                if self.crc_control == True:
+                    CRC = self.frame.CRC
+                    self.frame.calcCRC()
+
+                    if CRC != self.frame.CRC:
+                        print("[WARNING] CRC error modbus")
+                        self.frame.clear()
+                        self.ser.flush()
+                        return False
+                        
+        return True
 
     def Test(self):
         frame = ModbusFrame(4)
@@ -132,6 +165,7 @@ class Modbus():
         frame.command = mC.MODBUS_WRITE_COIL
 
         frame.data[1] = mC.RTD_NET_ON_OFF
+        frame.data[2] = int(resources.temp_on)
         frame.data[3] = int(resources.temp_on)
         self.send_frame(frame)
         self.read_data(dataLen=8)
