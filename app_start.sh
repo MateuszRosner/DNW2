@@ -1,2 +1,2 @@
 #!/bin/sh
-sudo python3 /home/pi/InteliHouse1.0/Headless.py
+sudo python3 /home/pi/DNW2/Headless.py
