@@ -5,8 +5,8 @@ from datetime import datetime
 from requests.exceptions import HTTPError
 import resources
 
-login = 'DNW1'
-password = 'A8NE77?_33'
+login = 'DNW2_1'
+password = '23-4HW8JKK'
 
 def log_to_panel():
     print("[INFO] Token aquisition started...")

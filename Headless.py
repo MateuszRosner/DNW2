@@ -22,7 +22,7 @@ class App():
         # try to read config file
         while True:
             try:
-                self.config.read('/home/pi/Desktop/test/InteliHouse1.0/config.ini')
+                self.config.read('./config.ini')
 
                 self.refreshTime            = int(self.config['PARAMETERS']['RefreshFrequency'])
                 self.mainOutputs            = self.config['MAIN_OUTPUTS']
