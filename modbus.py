@@ -206,7 +206,7 @@ class Modbus():
             print(f"[INFO] AC fan speed lvl: {self.frame.data[2]}")
 
         frame.command = mC.MODBUS_READ_COIL
-        frame.data[1] = mC.RTD_NET_ON_OFF
+        frame.data[0] = mC.RTD_NET_ON_OFF
         self.send_frame(frame)
 
         if self.read_coil_data() == True:
