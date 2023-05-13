@@ -66,6 +66,7 @@ class Modbus():
             data = bytearray(data)
 
             if len(data) < dataLen:
+                print(data)
                 self.frame.clear()
                 self.ser.flush()
                 return False
