@@ -58,7 +58,7 @@ def send_test_data(token, resources):
                                         "press1" : resources.pressure[0]/10.0,    "press2" : resources.pressure[1]/10.0,    "press3" : resources.pressure[2]/10.0, 
                                         "humid1" : resources.humidity[0]/10.0,    "humid2" : resources.humidity[1]/10.0,    "humid3" : resources.humidity[2]/10.0, 
                                         "ac_state" : resources.ac_state,          "temp_on" : resources.temp_on,            "freeze_protect" : resources.anti_freez,        "temp_set" : resources.ac_temp,
-                                        "uq_house_id" : "dnw1",                   'valdate' : date_time_parse,              "tempdate" : resources.tempdate}, 
+                                        "uq_house_id" : "dnw2_1",                   'valdate' : date_time_parse,              "tempdate" : resources.tempdate}, 
                                         headers=headers)
     except HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
