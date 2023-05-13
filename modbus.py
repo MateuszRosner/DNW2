@@ -173,7 +173,7 @@ class Modbus():
         #frame.data[2] = int(resources.temp_on)
         #frame.data[3] = int(resources.temp_on)
         self.send_frame(frame2)
-        self.read_coil_data(dataLen=8)
+        self.read_coil_data()
 
     def read_ac_params(self, resources):
         frame = ModbusFrame(4)
