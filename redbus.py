@@ -37,7 +37,7 @@ class Redbus():
             print(f"[ERROR] Can't open serial port {self.dev}")
 
         self.resources = resources
-        self.infrastructure = Infrastructure('./config.ini')
+        self.infrastructure = Infrastructure('/home/pi/DNW2/config.ini')
         self.frame = RedbusFrame(dataLen)
         self.rec_data_len = dataLen
         self.crc_control = crcControl

@@ -22,7 +22,7 @@ class App():
         # try to read config file
         while True:
             try:
-                self.config.read('./config.ini')
+                self.config.read('/home/pi/DNW2/config.ini')
 
                 self.refreshTime            = int(self.config['PARAMETERS']['RefreshFrequency'])
                 self.mainOutputs            = self.config['MAIN_OUTPUTS']
