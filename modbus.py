@@ -212,15 +212,15 @@ class Modbus():
         frame.command = mC.MODBUS_READ_COIL
         frame.data[0] = 0x00
         frame.data[1] = mC.RTD_NET_ON_OFF
-        #frame.data[2] = 0x00
-        #frame.data[3] = 0x01
+        frame.data[2] = 0x00
+        frame.data[3] = 0x01
 
         self.send_frame(frame)
 
         if self.read_coil_data(dataLen=6) == True:
             print(f"[INFO] AC state on/off: {self.frame.data[2]}")
             if self.frame.data[2] != int(resources.temp_on):
-                resources.temp_on = bool(self.frame.data[2])
+                resources.temp_on = bool(self.frame.data[1])
                 date_time = datetime.now()
                 resources.tempdate = date_time.strftime("%Y-%m-%d %H:%M:%S")
 
