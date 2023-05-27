@@ -164,20 +164,19 @@ class Modbus():
 
         frame.command = mC.MODBUS_WRITE_COIL
 
-        #frame2 = ModbusFrame(2)
-        #frame2.address = 0x01
-        #frame2.data[0] = mC.RTD_NET_ON_OFF
-        #frame2.data[0] = int(resources.temp_on)
-
+        frame.data[0] = 0x00
         frame.data[1] = mC.RTD_NET_ON_OFF
+
         if int(resources.temp_on) == 1:
-            #frame.data[2] = int(resources.temp_on)
-            frame.data[3] = int(0xFF)
+            
+            frame.data[2] = 0xFF
+            frame.data[3] = 0x00
         else:
-            frame.data[3] = int(0x00)
+            frame.data[2] = 0xFF
+            frame.data[3] = 0x00
         
         self.send_frame(frame)
-        self.read_coil_data()
+        self.read_coil_data(dataLen=5)
 
     def read_ac_params(self, resources):
         frame = ModbusFrame(4)
@@ -213,7 +212,7 @@ class Modbus():
         frame.data[0] = mC.RTD_NET_ON_OFF
         self.send_frame(frame)
 
-        if self.read_coil_data() == True:
+        if self.read_coil_data(dataLen=5) == True:
             print(f"[INFO] AC state on/off: {self.frame.data[2]}")
             if self.frame.data[2] != int(resources.temp_on):
                 resources.temp_on = bool(self.frame.data[2])
