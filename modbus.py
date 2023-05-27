@@ -217,13 +217,14 @@ class Modbus():
 
         self.send_frame(frame)
 
-        if self.read_coil_data(dataLen=7) == True:
+        if self.read_coil_data(dataLen=6) == True:
             print(f"[INFO] AC state on/off: {self.frame.data[1]}")
             if self.frame.data[1] != int(resources.temp_on):
                 resources.temp_on = bool(self.frame.data[1])
                 date_time = datetime.now()
                 resources.tempdate = date_time.strftime("%Y-%m-%d %H:%M:%S")
-
+        
+        self.FlushBuffer()
     
     def FlushBuffer(self):
         self.ser.flush()
