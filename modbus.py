@@ -173,7 +173,7 @@ class Modbus():
             frame.data[2] = 0xFF
             frame.data[3] = 0x00
         else:
-            frame.data[2] = 0xFF
+            frame.data[2] = 0x00
             frame.data[3] = 0x00
         
         self.send_frame(frame)
