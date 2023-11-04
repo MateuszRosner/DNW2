@@ -79,9 +79,9 @@ class App():
                 self.resources.temp_on = bool(response["temp_on"])
                 self.resources.anti_freez = bool(response["freeze_protect"])
                 self.modbus.set_ac_params(self.resources)
-                if self.rentStatus != bool(response["rented"] == 'true'):
+                if self.rentStatus != bool(response["rented"]):
                     self.modbus.set_ac_params(self.resources, address=0x02)
-                    self.rentStatus = bool(response["rented"] == 'true')
+                    self.rentStatus = bool(response["rented"])
 
             except Exception as err:
                 print(f'Other error occurred: {err}')                
