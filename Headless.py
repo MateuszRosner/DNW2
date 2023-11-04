@@ -31,6 +31,7 @@ class App():
 
                 self.infrastructure         = self.config['INFRASTRUCTURE']
                 self.addresses              = self.config['ADDRESSES']
+                self.rentStatus             = False
             except Exception as err:
                 print(f"[INFO] Config file issu {err}")
                 time.sleep(1)
@@ -78,6 +79,10 @@ class App():
                 self.resources.temp_on = bool(response["temp_on"])
                 self.resources.anti_freez = bool(response["freeze_protect"])
                 self.modbus.set_ac_params(self.resources)
+                if self.rentStatus != bool(response["rented"]):
+                    self.modbus.set_ac_params(self.redbus, address=0x02)
+                    self.rentStatus = bool(response["rented"])
+
             except Exception as err:
                 print(f'Other error occurred: {err}')                
 
