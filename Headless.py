@@ -40,16 +40,14 @@ class App():
                 break
         
         # init objects
-        self.resources = Resources()
-        self.redbus = redbus.Redbus(resources=self.resources, dev="/dev/ttySC0")
-        self.modbus = modbus.Modbus(dev="/dev/ttySC1", dataLen=7, crcControl=False)
+        self.resources  = Resources()
+        self.redbus     = redbus.Redbus(resources=self.resources, dev="/dev/ttySC0")
+        self.modbus     = modbus.Modbus(dev="/dev/ttySC1", dataLen=7, crcControl=False)
 
         self.frame = redbus.RedbusFrame(4)
 
         # misc variables
-        #self.logger = Logger()
         self.prescaller = 1
-        self.counter = 0
         
         # run REDBUS and initiate modules
         self.redbus.initiate_modules()
@@ -64,21 +62,28 @@ class App():
 
         self.prescaller -= 1
         if self.prescaller == 0:
-            #self.logger.logData(self.resources)
+            # reload prescaler value
             self.prescaller = int(self.config['LOGGER']['Prescaller'])
             
-            token = remoteClient.log_to_panel()
-            response = remoteClient.send_test_data(token, self.resources)
+            # gather a token
+            token       = remoteClient.log_to_panel()
+            # send actual values to server and recive updated data from panel
+            response    = remoteClient.send_test_data(token, self.resources)
+            
             test_relays = 0
             try:
+                # reload relays states, AC parameters
                 for idx in range(1, 11, 1):
                     test_relays |= (int(bool(response[f"output{idx}"])) << (idx-1))  
                 
-                self.resources.relays = test_relays
-                self.resources.ac_temp = response["temp_set"]
-                self.resources.temp_on = bool(response["temp_on"])
-                self.resources.anti_freez = bool(response["freeze_protect"])
+                self.resources.relays       = test_relays
+                self.resources.ac_temp      = response["temp_set"]
+                self.resources.temp_on      = bool(response["temp_on"])
+                self.resources.anti_freez   = bool(response["freeze_protect"])
+                
+                # set AC parameters
                 self.modbus.set_ac_params(self.resources)
+                # turn on / off additional AC only if renting status changed
                 if self.rentStatus != bool(response["rented"]):
                     self.modbus.set_ac_params(self.resources, address=0x02)
                     self.rentStatus = bool(response["rented"])
