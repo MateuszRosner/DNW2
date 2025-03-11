@@ -108,6 +108,12 @@ class Redbus():
                             
                             for x in range(len(self.resources.output_ports)):
                                 self.resources.output_ports[x] = bool (ports & (1 << x))
+
+                        elif self.frame.command == mC.MAIN_BOARD_READ_LIQUIDS:
+                            self.resources.liquids[0] = self.frame.data[0]
+                            self.resources.liquids[1] = self.frame.data[1]
+                            self.resources.liquids[3] = self.frame.data[2]
+
                     except Exception as err:
                         print(f"[WARNING] MainBoard data format corrupted! {err}")
 
@@ -246,6 +252,15 @@ class Redbus():
                         if (self.read_data() == False):
                             print( f"[ERROR] Module MainBoard on address: {dataFrame.address} failure")
                         time.sleep(self.transmissionInterval)
+
+                    #read liquids lvl
+                    dataFrame.address = int(adr)
+                    dataFrame.command = mC.MODBUS_READ
+                    dataFrame.data[0] = mC.MAIN_BOARD_READ_LIQUIDS
+                    self.send_frame(dataFrame)
+                    if (self.read_data() == False):
+                        print( f"[ERROR] Module MainBoard on address: {dataFrame.address} failure")
+                    time.sleep(self.transmissionInterval)
 
             # AmbientBoards queries
             if self.infrastructure.infrastructure['AmbientBoards'] != '0':        
